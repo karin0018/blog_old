@@ -1,0 +1,1265 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="旨在理解网络层服务原理和熟悉因特网的网络层协议。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络复习 - 网络层">
+<meta property="og:url" content="https://github.com/karin0018/karin0018.github.io/2021/01/26/ComputerNetworkReview-Chap4/index.html">
+<meta property="og:site_name" content="KarinLv&#39;s Blog">
+<meta property="og:description" content="旨在理解网络层服务原理和熟悉因特网的网络层协议。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/1.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/2.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/3.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/4.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/11.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/12.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/5.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/6.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/7.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/8.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/9.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/10.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/13.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/14.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/15.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/16.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/17.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/18.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/19.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/20.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/21.PNG">
+<meta property="og:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/22.PNG">
+<meta property="article:published_time" content="2021-01-25T16:24:20.000Z">
+<meta property="article:modified_time" content="2021-05-19T11:27:06.433Z">
+<meta property="article:author" content="Karin Lv">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/2021/01/26/ComputerNetworkReview-Chap4/1.PNG"><title>计算机网络复习 - 网络层 | KarinLv's Blog</title><link ref="canonical" href="https://github.com/karin0018/karin0018.github.io/2021/01/26/ComputerNetworkReview-Chap4/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><script src="https://www.googletagmanager.com/gtag/js?id=G-C0DMRRZFFK" async="" data-pjax=""></script><script data-pjax="">if (window.location.hostname !== 'localhost') {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-C0DMRRZFFK');
+}</script><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: {"avoidBanner":false},
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-user"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">计算机网络复习 - 网络层</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-01-26</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-05-19</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">6k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">48分</span></span></div></header><div class="post-body"><p>旨在理解网络层服务原理和熟悉因特网的网络层协议。</p>
+<a id="more"></a>
+
+        <h1 id="综述">
+          <a href="#综述" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#综述"></a> 综述</h1>
+      
+<p>通过学习这一章节，我们需要了解以下两方面内容：</p>
+<p>理解网络层服务原理：</p>
+<ul>
+<li>网络层服务模型</li>
+<li>网络层上的重要功能：转发和选路</li>
+<li>路由器工作原理</li>
+<li>选路算法</li>
+</ul>
+<p>因特网的网络层协议：</p>
+<ul>
+<li>IP 协议</li>
+<li>ICMP 协议</li>
+<li>选路协议：RIP,OSPF,BGP</li>
+</ul>
+
+        <h1 id="概念简介">
+          <a href="#概念简介" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#概念简介"></a> 概念简介</h1>
+      
+<ol>
+<li>网络层的<strong>作用</strong>：将报文段从<strong>发送主机</strong>传送到<strong>接收主机</strong>。</li>
+</ol>
+<blockquote>
+<p>每一台主机和路由器都运行网络层协议。</p>
+<p>路由器：将分组从输入链路转发到输出链路。它运行的协议包括，网络层，链路层，物理层。</p>
+<p>发送主机：将传输层报文段封装到网络层分组中，发送给边缘路由器。</p>
+<p>接收主机：从边缘路由器接收分组，取出报文段交付给传输层。</p>
+</blockquote>
+<ol start="2">
+<li>
+<p>网络层的主要功能：</p>
+<p>选路：确定分组从源路由器到目的路由器的路径 – 利用各种<strong>路由算法</strong>来计算转发表。</p>
+<p>转发：将分组从输入端口转移到合适的输出端口 – 根据转发表转运分组。</p>
+<blockquote>
+<p>在传输分组之前，两个端系统需要建立连接。</p>
+<ul>
+<li>传输层连接：进程-进程，连接状态仅仅保存在端系统中，传输层服务在网络边缘实现</li>
+<li>网络层连接：主机-主机，连接状态保存在源主机，目的主机以及所有中间路由器上（路由器要保存转发表的嘛），网络层服务在网络核心实现。</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p>网络服务模型</p>
+<p>定义分组在发送主机与接收主机之间传输时的特性。</p>
+<ul>
+<li>
+<p>对单个分组提供的服务</p>
+<blockquote>
+<p>保证交付；具有时延上界的保证交付；</p>
+</blockquote>
+</li>
+<li>
+<p>对分组流提供的服务</p>
+<blockquote>
+<p>有序交付；保证最小带宽；<br>
+保证最大时延抖动（分组端到端时延的最大差异）；</p>
+</blockquote>
+<p>不同架构的网络提供的网络层服务可能不同，同一个网络也可以提供不同的网络层服务。</p>
+</li>
+</ul>
+</li>
+</ol>
+
+        <h1 id="虚电路和数据报网络">
+          <a href="#虚电路和数据报网络" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#虚电路和数据报网络"></a> 虚电路和数据报网络</h1>
+      
+<p>两种基本的网络类型：</p>
+<p><strong>数据报网络</strong>：提供网络层<strong>无连接</strong>服务</p>
+<p><strong>虚电路网络</strong>：提供网络层<strong>面向连接</strong>服务</p>
+
+        <h2 id="虚电路-virtual-circuits">
+          <a href="#虚电路-virtual-circuits" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#虚电路-virtual-circuits"></a> 虚电路 Virtual circuits</h2>
+      
+<p>网络层连接成为虚电路。</p>
+<p>虚电路是从源主机到目的主机的一条路径，类似电话电路，每条虚电路有唯一标识（虚电路号），每个分组应该携带虚电路号，表明所属的虚电路。</p>
+<blockquote>
+<p>传输<strong>分组前建立虚电路</strong>，传输结束后拆除虚电路;</p>
+<p>每个路由器为经过它的虚电路维护状态（转发表项 - 进入端口，进入VC号，输出端口，输出VC号），分组携带 VC 号，每一次转发前用新的 VC 号替换分组中的 VC 号 ;</p>
+<p>链路及路由器资源（带宽、缓存等）可以分配给虚电路，从而虚电路能提供<strong>可预期的</strong>网络服务。</p>
+</blockquote>
+<p>**信令协议：**用于 VC  的建立、维护与拆除。</p>
+
+        <h2 id="数据报网络">
+          <a href="#数据报网络" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#数据报网络"></a> 数据报网络</h2>
+      
+<ul>
+<li>
+<p>分组携带目的主机地址，路由器按目的地址转发分组；</p>
+</li>
+<li>
+<p>路由器根据分组的目的地址转发分组，转发表记录目的地址到输出链路的映射；</p>
+<blockquote>
+<p>实际上是存储<strong>目的地址的范围</strong>到<strong>链路</strong>的映射；</p>
+<p>匹配规则：最长前缀匹配优先；</p>
+</blockquote>
+</li>
+<li>
+<p>转发表被选路模块修改，约1～5分钟更新一次；</p>
+</li>
+<li>
+<p>同一对主机之间传输的分组可能走不同的路径，从而可能重排序；</p>
+</li>
+</ul>
+
+        <h2 id="数据报网络-vs-虚电路网络">
+          <a href="#数据报网络-vs-虚电路网络" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#数据报网络-vs-虚电路网络"></a> 数据报网络 VS 虚电路网络</h2>
+      
+<p>数据报网络：</p>
+<ul>
+<li>计算机之间交换数据：没有严格的时序要求；</li>
+<li>终端具有智能：将复杂的工作（如差错控制）推到网络边缘，以保持网络简单。</li>
+</ul>
+<p>虚电路网络：</p>
+<ul>
+<li>由电信网发展而来：严格时序和可靠性要求；</li>
+<li>终端无智能或很少智能：复杂工作由网络完成，以保持终端简单。</li>
+</ul>
+
+        <h1 id="internet-网络层协议">
+          <a href="#internet-网络层协议" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#internet-网络层协议"></a> Internet 网络层协议</h1>
+      
+
+        <h2 id="internet-网络层">
+          <a href="#internet-网络层" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#internet-网络层"></a> internet 网络层</h2>
+      
+  <img src="/2021/01/26/ComputerNetworkReview-Chap4/1.PNG" class title="This is an internet image">
+
+        <h2 id="ipv4-数据报格式">
+          <a href="#ipv4-数据报格式" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#ipv4-数据报格式"></a> IPv4 数据报格式</h2>
+      
+  <img src="/2021/01/26/ComputerNetworkReview-Chap4/2.PNG" class title="This is an IP4 image">
+
+        <h2 id="ip-数据报分片">
+          <a href="#ip-数据报分片" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#ip-数据报分片"></a> IP 数据报分片</h2>
+      
+
+        <h3 id="最大传输单元-mtu">
+          <a href="#最大传输单元-mtu" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#最大传输单元-mtu"></a> 最大传输单元 MTU</h3>
+      
+<p>MTU：链路层数据帧可封装数据的上限；<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>M</mi><mi>T</mi><mi>U</mi><mo>=</mo><mi>M</mi><mi>A</mi><mi>X</mi><mo stretchy="false">(</mo><mi>d</mi><mi>a</mi><mi>t</mi><mi>a</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">MTU = MAX(data)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.10903em;">U</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="mord mathdefault">A</span><span class="mord mathdefault" style="margin-right:0.07847em;">X</span><span class="mopen">(</span><span class="mord mathdefault">d</span><span class="mord mathdefault">a</span><span class="mord mathdefault">t</span><span class="mord mathdefault">a</span><span class="mclose">)</span></span></span></span></p>
+<blockquote>
+<p>不同链路的 MTU 不同</p>
+</blockquote>
+
+        <h3 id="分组与重组">
+          <a href="#分组与重组" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#分组与重组"></a> 分组与重组</h3>
+      
+<p>大 IP 向比较小的 MTU 链路转发时，可以被分片 （fragmented）。</p>
+<ol>
+<li>大 IP 分片成若干小 IP</li>
+<li>IP 分片在到达 <strong>目的主机</strong> 后重组（路由器只管分不管组装）</li>
+</ol>
+<p>IP 首部相关字段用于标识分片以及确定分片的顺序（便于在目的主机重组 IP 分组）</p>
+<blockquote>
+<p>涉及到的字段：总长度、标识、标志和片偏移字段。</p>
+</blockquote>
+<ul>
+<li>标识：每个分片必须携带与原始数据报相同的标识。</li>
+<li>标志位：
+<ul>
+<li>MF（more fragments）：最后一个分片的MF=0，其余分片的 MF=1</li>
+<li>DF（don’t fragment）：DF=1 表示不允许对数据报分片</li>
+</ul>
+</li>
+<li>片偏移量（13bits）：指示分片中的数据在原始数据报载荷中的位置（以 8 字节为单位）</li>
+</ul>
+<p><strong>分片的处理过程</strong></p>
+<p>根据报头长度 H 和输出线路的 MTU 为 M，原 IP 分组的总长度为 L 。</p>
+<p>一个最大分片可封装的数据为：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>d</mi><mo>=</mo><mo stretchy="false">⌊</mo><mfrac><mrow><mi>M</mi><mo>−</mo><mn>20</mn></mrow><mn>8</mn></mfrac><mo stretchy="false">⌋</mo><mo>∗</mo><mn>8</mn><mtext> </mtext><mi>B</mi><mi>y</mi><mi>t</mi><mi>e</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">d = \lfloor \frac{M-20}{8} \rfloor * 8 ~ Bytes</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">d</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.217331em;vertical-align:-0.345em;"></span><span class="mopen">⌊</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.872331em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">8</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.10903em;">M</span><span class="mbin mtight">−</span><span class="mord mtight">2</span><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">⌋</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mord">8</span><span class="mspace nobreak"> </span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault">s</span></span></span></span></p>
+<p>需要的总片数为： <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi><mo>=</mo><mo stretchy="false">⌈</mo><mfrac><mrow><mi>L</mi><mo>−</mo><mn>20</mn></mrow><mi>d</mi></mfrac><mo stretchy="false">⌉</mo></mrow><annotation encoding="application/x-tex">n = \lceil \frac{L-20}{d} \rceil</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.217331em;vertical-align:-0.345em;"></span><span class="mopen">⌈</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.872331em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">d</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">L</span><span class="mbin mtight">−</span><span class="mord mtight">2</span><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">⌉</span></span></span></span></p>
+<ol>
+<li>
+<p>将数据报的载荷划分成长度为 d 的若干片段（最后一个分片可能不足 d 字节）。</p>
+</li>
+<li>
+<p>将原始报头加到每一个分片的前面，修改报头中的以下字段：</p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>总长度</mtext><mo>=</mo><mi>d</mi><mo>+</mo><mn>20</mn><mo separator="true">,</mo><mtext> </mtext><mo stretchy="false">(</mo><mn>1</mn><mo>&lt;</mo><mo>=</mo><mi>i</mi><mo>&lt;</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\text{总长度} = d + 20,  ~(1 &lt;= i &lt; n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord cjk_fallback">总长度</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">d</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace nobreak"> </span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.69862em;vertical-align:-0.0391em;"></span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span>;   $ or = L-(n-1)d, ~(i = n)$</p>
+<p>最后一个报头的 MF 位置 0，其余报头的 MF 位置 1</p>
+<p>偏移量：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>F</mi><mi>i</mi></msub><mo>=</mo><mfrac><mi>d</mi><mn>8</mn></mfrac><mo>∗</mo><mo stretchy="false">(</mo><mi>i</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo separator="true">,</mo><mtext>   </mtext><mn>1</mn><mo>≤</mo><mi>i</mi><mo>≤</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">F_i = \frac{d}{8} * (i-1), ~~~ 1\le i \le n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.2251079999999999em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8801079999999999em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">8</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">d</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace nobreak"> </span><span class="mspace nobreak"> </span><span class="mspace nobreak"> </span><span class="mord">1</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.79549em;vertical-align:-0.13597em;"></span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span></span></span></span></p>
+</li>
+<li>
+<p>计算头部检查和</p>
+</li>
+</ol>
+
+        <h2 id="ip-编址">
+          <a href="#ip-编址" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#ip-编址"></a> IP 编址</h2>
+      
+<p><strong>接口：</strong> 主机 or 路由器 与物理链路的边界。</p>
+<p>**IP 地址：**32bit 标识主机、路由器的接口。一般采用点分十进制标识（8位一组，转成十进制），例如：<code>127.0.0.1</code></p>
+<p><strong>如何为接口分配 IP 地址？</strong></p>
+<ul>
+<li>IP 地址分为两部分，高位比特为网络号，低位比特为主机号。</li>
+<li><strong>IP 子网：</strong> IP 地址具有相同的网络号，<strong>不跨越路由器</strong>，可以彼此物理联通的接口。</li>
+</ul>
+
+        <h3 id="有类编址">
+          <a href="#有类编址" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#有类编址"></a> 有类编址</h3>
+      
+  <img src="/2021/01/26/ComputerNetworkReview-Chap4/3.PNG" class title="This is an IP class image">
+<p>A,B,C 类 IP 地址可以用来给主机或路由器分配网络接口，但也有一些特殊情况。</p>
+ <img src="/2021/01/26/ComputerNetworkReview-Chap4/4.PNG" class title="This is an IP special image">
+
+        <h3 id="子网划分">
+          <a href="#子网划分" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#子网划分"></a> 子网划分</h3>
+      
+<p>IP 地址：</p>
+<ul>
+<li>网络号 NetID - 高位比特</li>
+<li>子网号 SubID - 原网络主机号部分比特</li>
+<li>主机号 HostID - 低位比特</li>
+</ul>
+<p><strong>如何确定是否划分了子网？利用多少位划分子网？</strong></p>
+<ul>
+<li>
+<p><strong>子网掩码</strong>：形如 IP 地址。<strong>取值：NetID、SubID 全部取 1， HostID 全部取 0</strong></p>
+<blockquote>
+<p>例如：</p>
+<p>A 网默认子网掩码 ：<code>255.0.0.0</code></p>
+<p>B 网默认子网掩码 ：<code>255.255.0.0</code></p>
+<p>C 网默认子网掩码 ：<code>255.255.255.0</code></p>
+<p>借用 3 比特划分子网的 B 网的子网掩码：<code>255.255.224.0</code></p>
+</blockquote>
+</li>
+<li>
+<p>对特定主机来说，前 32 位都看成网络号，即其子网掩码为 <code>255.255.255.255</code></p>
+</li>
+<li>
+<p>子网地址 + 子网掩码 = 准确确定子网大小</p>
+<blockquote>
+<p>例：将 子网 <code>201.2.3.0</code>, <code>255.255.255.0</code> 划分为等长的 4 个子网。</p>
+<p>分析：</p>
+<p>C 网，主机号范围只有最后 8 位（一共可以有 256 个不同的主机号）</p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>256</mn><mi mathvariant="normal">/</mi><mn>4</mn><mo>=</mo><mn>64</mn></mrow><annotation encoding="application/x-tex">256 / 4 = 64</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mord">5</span><span class="mord">6</span><span class="mord">/</span><span class="mord">4</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">6</span><span class="mord">4</span></span></span></span>，所以将最后 8 位的前两位借为子网号，划分的四个子网如下：</p>
+<ol>
+<li>
+<p><code>201.2.3.0 子网号(00) 255.255.255.192</code></p>
+<p>该子网的 IP 地址范围为 <code>201.2.3.0 ~ 201.2.3.63</code></p>
+<p>去掉子网 IP 地址(0)和该子网的广播地址(63)，<strong>可分配的 IP 地址</strong>为：<code>201.2.3.1 ~ 201.2.3.62</code></p>
+</li>
+<li>
+<p><code>201.2.3.64 子网号(01) 255.255.255.192</code></p>
+</li>
+<li>
+<p><code>201.2.3.128 子网号(10) 255.255.255.192</code></p>
+</li>
+<li>
+<p><code>201.2.3.192 子网号(11) 255.255.255.192</code></p>
+</li>
+</ol>
+</blockquote>
+</li>
+</ul>
+
+        <h4 id="一个栗子">
+          <a href="#一个栗子" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#一个栗子"></a> 一个栗子</h4>
+      
+<img src="/2021/01/26/ComputerNetworkReview-Chap4/11.PNG" class title="This is an eg image">
+<blockquote>
+<p>其中 <code>0.0.0.0</code> 是一个特殊 IP ，表示所有待选 IP 都没有匹配到，这个特殊 IP 没有网络号。</p>
+</blockquote>
+<img src="/2021/01/26/ComputerNetworkReview-Chap4/12.PNG" class title="This is an eg-3 image">
+
+        <h3 id="无类域间路由-cidr">
+          <a href="#无类域间路由-cidr" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#无类域间路由-cidr"></a> 无类域间路由 CIDR</h3>
+      
+<p>CIDR (Classless InterDomain Routing)：</p>
+<ul>
+<li>
+<p>消除传统的 A、B、C 类地址界限：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>N</mi><mi>e</mi><mi>t</mi><mi>I</mi><mi>D</mi><mo>+</mo><mi>S</mi><mi>u</mi><mi>b</mi><mi>I</mi><mi>D</mi><mo>−</mo><mo>&gt;</mo><mi>N</mi><mi>e</mi><mi>t</mi><mi>w</mi><mi>o</mi><mi>r</mi><mi>k</mi><mtext> </mtext><mi>P</mi><mi>r</mi><mi>e</mi><mi>f</mi><mi>i</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">NetID + SubID-&gt;Network~Prefix</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mord mathdefault">e</span><span class="mord mathdefault">t</span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mord mathdefault">u</span><span class="mord mathdefault">b</span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mord">−</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mord mathdefault">e</span><span class="mord mathdefault">t</span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mspace nobreak"> </span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault">i</span><span class="mord mathdefault">x</span></span></span></span></p>
+</li>
+<li>
+<p>融合子网地址与子网掩码，方便子网划分：<code>a.b.c.d/x</code> 其中 x 为前缀长度</p>
+<blockquote>
+<p>例如：<code>200.23.16.0/23</code></p>
+<p>C 类地址前 24 位都是网络号，但这里的 CIDR 地址的前缀只有 23 位。</p>
+<p>实际上它是两个 C 类地址的组合：<code>200.23.16.0</code> 和 <code>200.23.17.0</code> (第24位分别为 0 和 1)</p>
+</blockquote>
+</li>
+<li>
+<p>子网 <code>201.2.2.3.64 255.255.255.192 -&gt; 201.2.3.64/26</code></p>
+</li>
+</ul>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>
+<p>提高 IPv4 地址空间分配效率</p>
+</li>
+<li>
+<p>提高路由效率</p>
+<ol>
+<li>将多个子网聚合为一个较大的子网</li>
+<li>构造超网（supernetting）</li>
+<li>路由聚合（route aggregation）</li>
+</ol>
+</li>
+</ul>
+
+        <h4 id="路由聚合">
+          <a href="#路由聚合" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#路由聚合"></a> 路由聚合</h4>
+      
+<p>路由表中符合聚合条件的若干条路由可以<strong>合并成一条路由</strong>：</p>
+<ul>
+<li>
+<p>这些路由的前缀可以聚合成一个更短的前缀（称地址前缀）</p>
+</li>
+<li>
+<p>这些路由使用相同的下一跳</p>
+</li>
+<li>
+<p>路由聚合的过程可以递归进行</p>
+<img src="/2021/01/26/ComputerNetworkReview-Chap4/5.PNG" class title="This is an CIDR image">
+</li>
+</ul>
+<blockquote>
+<p>若个别路由不满足路由聚合的条件，可以给出一条聚合路由和若干条特定路由。</p>
+<p><strong>最长前缀匹配优先</strong>：在所有匹配的路由表项中，选择前缀最长的路由表项。（避免路由黑洞现象【数据到达不了目标地址】）</p>
+ <img src="/2021/01/26/ComputerNetworkReview-Chap4/6.PNG" class title="This is an special CIDR image">
+</blockquote>
+
+        <h2 id="dhcp-协议">
+          <a href="#dhcp-协议" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#dhcp-协议"></a> DHCP 协议</h2>
+      
+<p><strong>一个主机如何获得 IP 地址？</strong></p>
+<ul>
+<li>
+<p>硬编码：静态配置（手动）</p>
+<blockquote>
+<p>默认网关：数据报离开子网时，将要经过的路由器接口。数据报将通过这个路由器进一步转发到其他路径。</p>
+</blockquote>
+</li>
+<li>
+<p>动态主机配置协议 DHCP：自动获取（租赁）IP 地址、子网掩码、默认网关地址、缺省路由器、本地 DNS 服务器等配置信息。</p>
+<blockquote>
+<p>即插即用；</p>
+<p>允许地址重用（IP 地址采用租赁的形式，当一个主机不用时，归还 IP ，这个 IP 就可以分给其他主机使用）；</p>
+<p>可以续租；</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>DHCP 工作过程：</strong></p>
+<ul>
+<li>
+<p>主机<strong>广播</strong> “DHCP discover” 报文</p>
+<blockquote>
+<p>寻找子网中的 DHCP 服务器</p>
+</blockquote>
+</li>
+<li>
+<p>DHCP 服务器用 “DHCP offer” 报文进行<strong>广播</strong>响应</p>
+<blockquote>
+<p>给出推荐的 IP 地址及租期、其它配置信息</p>
+</blockquote>
+</li>
+<li>
+<p>主机用 “DHCP request” 报文<strong>广播</strong>请求 IP 地址</p>
+<blockquote>
+<p>主机选择一个 DHCP 服务器，向其请求 IP 地址</p>
+</blockquote>
+</li>
+<li>
+<p>DHCP 服务器用“DHCP ack” 报文发送IP地址</p>
+<blockquote>
+<p>响应客户的请求，确认所要求的参数</p>
+</blockquote>
+</li>
+<li>
+<p>DHCP 服务器使用 UDP 端口 67，客户使用 UDP 端口 68</p>
+</li>
+</ul>
+<p><strong>DHCP 的实现：</strong></p>
+<ul>
+<li>
+<p>在应用层实现</p>
+</li>
+<li>
+<p>请求报文封装到 UDP 数据报中</p>
+<blockquote>
+<p>封装 ：DHCP 应用层 -&gt; UDP 传输层 -&gt; IP 网络层-&gt; Eth 链路层 -&gt; Phy 物理层</p>
+</blockquote>
+</li>
+<li>
+<p>IP 广播 -&gt; 链路层广播（e.g. 以太网广播）</p>
+</li>
+</ul>
+
+        <h2 id="网络地址转换-nat">
+          <a href="#网络地址转换-nat" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#网络地址转换-nat"></a> 网络地址转换 NAT</h2>
+      
+<p><strong>动机：</strong></p>
+<ul>
+<li>IP地址支持许多用户同时上网</li>
+<li>仅为公共可访问的节点分配公用IP地址（减少需要的公用IP地址数）</li>
+<li>网络内部节点对外是不可见的（安全考虑）</li>
+</ul>
+<p><strong>NAT 实现：</strong></p>
+<ul>
+<li><strong>外出的数据报</strong>:  将数据报中的（源IP地址，源端口号）替换为（NAT IP地址，新端口号）</li>
+<li><strong>NAT 转换表</strong>：记录每个（源IP地址，源端口号）与（NAT IP地址，新端口号）的转换关系</li>
+<li><strong>进入的数据报</strong>: 取出数据报中的（目的IP地址，目的端口号）查找NAT转换表，然后用转换表中对应的（IP地址，端口号）进行替换</li>
+</ul>
+<p><strong>16比特端口号</strong>:</p>
+<p>允许一个 NAT IP 地址同时支持65535个对外连接</p>
+<p><strong>NAT的使用有争议</strong>:</p>
+<ul>
+<li>
+<p>路由器应当只处理三层以下的报头（端口号在传输层）</p>
+</li>
+<li>
+<p>违反端到端原则（节点介入修改IP地址和端口号）</p>
+<p>NAT 妨碍 P2P 应用程序：需要 NAT 穿越技术</p>
+<blockquote>
+<p>方案一：静态配置 NAT ，将特定端口的连接请求转发给服务器。</p>
+<p>方案二：利用 UPnP 互联网网关设备协议自动配置。可以学习 NAT 公共 IP 地址，并在 NAT 转换表中增删端口映射。</p>
+<p>方案三：中继（如 Skype）NAT 内部客户-  中继 - NAT 外部客户；中继服务器桥接两个连接的分组。</p>
+</blockquote>
+</li>
+<li>
+<p>地址短缺问题应该由  IPv6 解决</p>
+</li>
+</ul>
+
+        <h2 id="互联网控制报文协议-icmp">
+          <a href="#互联网控制报文协议-icmp" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#互联网控制报文协议-icmp"></a> 互联网控制报文协议 ICMP</h2>
+      
+<p>ICMP 协议支持主机或路由器：差错或异常报告；网络探询；</p>
+<p><strong>两类 ICMP 报文</strong>：</p>
+<ul>
+<li>
+<p>差错报告报文</p>
+<ol>
+<li>
+<p>目的不可达</p>
+<blockquote>
+<p>路由器无法为一个数据报找到路由或主机无法交付一个数据报，然后丢弃数据报</p>
+</blockquote>
+</li>
+<li>
+<p>源抑制</p>
+<blockquote>
+<p>拥塞控制的一种方法：警告源节点，在路径中的某处出现了拥塞，源节点必须放慢(抑制)发送过程</p>
+</blockquote>
+</li>
+<li>
+<p>超时/超期</p>
+<blockquote>
+<p>TTL = 0 或</p>
+<p>目的结点在规定的时间内没有收到一个分组的所有分片</p>
+</blockquote>
+</li>
+<li>
+<p>参数问题</p>
+<blockquote>
+<p>路由器或目的节点发现数据报首部中的字段值出错(二义性)，丢弃该数据报</p>
+</blockquote>
+</li>
+<li>
+<p>重定向</p>
+<blockquote>
+<p>路由器发现这个 IP 数据报不应该由自己转发，则向源主机发送重定向报文，请求重定向</p>
+</blockquote>
+</li>
+</ol>
+</li>
+<li>
+<p>网络探询报文</p>
+<ol>
+<li>回声（Echo）请求与应答报文（Reply）</li>
+<li>时间戳请求与应答报文</li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>由于 ICMP 报文可能需要经过几个网络才能到达源节点，ICMP 报文被封装在IP包中传输。</p>
+<p>ICMP 通常被认为是 IP 协议的一部分，因为 IP 协议使用 ICMP 向源节点发送错误报告。</p>
+<p><strong>Ping 利用 ICMP 报文测试目的主机是否活跃</strong>，以及去往目的主机的路径是否正常：</p>
+<ul>
+<li>源主机发送 Type=8，Code=0 的 Echo Request 报文</li>
+<li>若目的主机收到，发送 Type=0，Code=0 的 Echo Response 报文<br>
+源主机计算并报告 RTT</li>
+<li>若源主机连续几次超时（收不到Echo Response），向调用者报告目的不可达</li>
+</ul>
+</blockquote>
+<p><strong>不产生 ICMP 差错报文情形：</strong></p>
+<ul>
+<li>对于携带 ICMP 差错报文的数据报，不再产生 ICMP 差错报文</li>
+<li>对于分片的数据报，如果<strong>不是第一个分片</strong>，则不产生 ICMP 差错报文</li>
+<li>对于具有<strong>组播(也称多播)地址</strong>的数据报，不产生 ICMP 差错报文</li>
+<li>对于具有<strong>特殊地址</strong>(如 127.0.0.0 或 0.0.0.0 )，不产生 ICMP 差错报文</li>
+</ul>
+<p><strong>ICMP 报文格式：</strong></p>
+  <img src="/2021/01/26/ComputerNetworkReview-Chap4/7.PNG" class title="This is an ICMPimage">
+  <img src="/2021/01/26/ComputerNetworkReview-Chap4/8.PNG" class title="This is an ICMP-2 image">
+
+        <h2 id="ipv6">
+          <a href="#ipv6" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#ipv6"></a> IPv6</h2>
+      
+<p><strong>动机：</strong></p>
+<ul>
+<li>32 位 IPv4 地址空间已经分配殆尽</li>
+<li>改进首部格式：快速处理、转发数据报；支持 QoS；</li>
+</ul>
+<p><strong>IPv6 与 IPv4 不兼容，但与其它所有因特网协议都兼容。</strong></p>
+
+        <h3 id="ipv6-数据报格式">
+          <a href="#ipv6-数据报格式" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#ipv6-数据报格式"></a> IPv6 数据报格式</h3>
+      
+<ul>
+<li>
+<p>固定长度的 40 字节基本首部</p>
+</li>
+<li>
+<p><strong>不允许分片</strong></p>
+<img src="/2021/01/26/ComputerNetworkReview-Chap4/9.PNG" class title="This is an ipv6 image">
+</li>
+</ul>
+
+        <h3 id="ipv6-地址">
+          <a href="#ipv6-地址" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#ipv6-地址"></a> IPv6 地址</h3>
+      
+<p>128 位，使用冒号十六进制表示，每 16 位以十六进制的形式写成一组，组之间用冒号分隔，如 <code>8000:0:0:0:0123:4567:89AB:CDEF</code></p>
+<p>地址表示的零压缩技术：可将连续的多组 0 压缩为一对冒号，如以上地址可表示为：``8000::0123:4567:89AB:CDEF`</p>
+<p>IPv6定义了三种地址类型：</p>
+<ul>
+<li>单播地址：一个特定的网络接口（一对一通信）</li>
+<li>多播地址：一组网络接口（一对多通信）</li>
+<li>任播地址（anycast）：一组网络接口中的任意一个（通常是最近的一个）</li>
+</ul>
+
+        <h3 id="ipv6-vs-ipv4">
+          <a href="#ipv6-vs-ipv4" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#ipv6-vs-ipv4"></a> IPv6 vs. IPv4</h3>
+      
+<p>与IPv4固定头相比，IPv6的基本头中去掉了以下一些字段：</p>
+<ul>
+<li>
+<p>IHL：IPv6的基本头总是40字节长</p>
+</li>
+<li>
+<p>与分片相关的字段：<strong>IPv6路由器不负责分片</strong></p>
+</li>
+<li>
+<p>头校验：计算校验和太花时间；现在的网络非常可靠，并且链路层和传输层上往往又都有校验和</p>
+</li>
+</ul>
+<p>IPv6基本头中增加了：</p>
+<ul>
+<li>流标签：支持对数据包区分处理</li>
+</ul>
+<p>改变了以下字段的作用：</p>
+<ul>
+<li>
+<p>Type of Service：代之以 Traffic Class</p>
+</li>
+<li>
+<p>总长度：代之以载荷长度</p>
+</li>
+<li>
+<p>Protocol：代之以Next header，允许任意扩展选项</p>
+</li>
+</ul>
+<p><strong>IPv6 数据包如何穿越 IPv4 网络？</strong></p>
+<ol>
+<li>
+<p>报头转换</p>
+<p>IPv4/IPv6节点（如路由器 B）在将数据报传递给 IPv4 路由器（如路由器 C）之前，将 IPv6 报头转换成 IPv4 报头<br>
+<strong>缺点</strong>：报头转换不完全，有信息丢失。</p>
+</li>
+<li>
+<p>建立隧道<br>
+IPv6/IPv4 边界路由器将 IPv6 包封装到一个 IPv4 包中，送入 IPv4 网络，目的边界路由器取出IPv6包继续传输。<br>
+<strong>优点</strong>：保留原始数据报的全部信息。</p>
+ <img src="/2021/01/26/ComputerNetworkReview-Chap4/10.PNG" class title="This is an ipv6-ipv4 image">
+</li>
+</ol>
+
+        <h1 id="路由算法">
+          <a href="#路由算法" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#路由算法"></a> 路由算法</h1>
+      
+<p>路由算法也就是解决选路问题的算法。</p>
+<p>选路问题：给定一组路由器和连接路由器的链路，寻找一条从源路由器到目的路由器的最佳路径。</p>
+<p>学过数据结构之后我们知道，计算机网络中的路由器网络可以抽象成图模型。</p>
+<ul>
+<li>
+<p>顶点：路由器</p>
+</li>
+<li>
+<p>边：链路</p>
+</li>
+<li>
+<p>边权：链路费用（可以是带宽的倒数、拥塞程度等）</p>
+</li>
+<li>
+<p><strong>关键问题：源到目的的最小费用路径 == 最短路径问题</strong></p>
+</li>
+</ul>
+
+        <h2 id="路由算法的分类">
+          <a href="#路由算法的分类" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#路由算法的分类"></a> 路由算法的分类</h2>
+      
+<ol>
+<li>
+<p>静态路由：</p>
+<p>手工配置；路由更新慢；优先级高；</p>
+</li>
+<li>
+<p>动态路由：</p>
+<p>路由更新快，能定期更新且及时响应链路费用或网络拓扑变化。</p>
+</li>
+<li>
+<p>全局算法：</p>
+<p>所有路由器掌握完整的网络拓扑和链路费用信息。</p>
+<p>e.g. 链路状态（LS ）路由算法。</p>
+</li>
+<li>
+<p>分布式算法：</p>
+<p>路由器只掌握物理相连的邻居及链路费用；</p>
+<p>邻居间信息交换、运算的迭代过程；</p>
+<p>e.g. 距离向量（DV）路由算法。</p>
+</li>
+</ol>
+
+        <h2 id="链路状态link-state路由算法">
+          <a href="#链路状态link-state路由算法" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#链路状态link-state路由算法"></a> 链路状态（Link State）路由算法</h2>
+      
+<p><strong>基于图的最短路径算法 – Dijkstra 算法，得到源点到其他所有顶点的最短路径。</strong></p>
+<ol>
+<li>所有节点（路由器）掌握网络拓扑和链路费用</li>
+<li>计算一个结点（源）到所有顶点的最短路径</li>
+<li>迭代：经过 k 次迭代后，得到到达 k 个目的结点的最短路径</li>
+</ol>
+<figure class="highlight c"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Dijkstra 算法</span></span><br><span class="line">Initialization:</span><br><span class="line">    N’ = &#123;u&#125;      <span class="comment">// N’为已找到最短路径的节点集合，初始时只有u</span></span><br><span class="line">    <span class="keyword">for</span> all nodes v    <span class="comment">//标记源节点u到各个节点v的路径代价D(v)</span></span><br><span class="line">      <span class="keyword">if</span> v adjacent to u</span><br><span class="line">          then D(v) = c(u,v)   <span class="comment">//c(u,v)为链路(u,v)的代价</span></span><br><span class="line">      <span class="keyword">else</span> D(v) = ∞</span><br><span class="line"></span><br><span class="line">   Loop</span><br><span class="line">     find w <span class="keyword">not</span> in N’ such that D(w) is a minimum  <span class="comment">//下一条最短路径</span></span><br><span class="line">    add w to N’     <span class="comment">//将找到最短路径的节点加入N’</span></span><br><span class="line">    update D(v) <span class="keyword">for</span> all v adjacent to w <span class="keyword">and</span> <span class="keyword">not</span> in N’ :</span><br><span class="line">       D(v) = min( D(v), D(w) + c(w,v) )    <span class="comment">//更新到相关节点的路径代价</span></span><br><span class="line">    until all nodes in N<span class="number">&#x27;</span></span><br></pre></td></tr></table></div></figure>
+<img src="/2021/01/26/ComputerNetworkReview-Chap4/13.PNG" class title="This is an dijkstra image">
+<p><strong>震荡现象：</strong> 若 A 是目的地，则下面这种情况下，最短路径循环变化，有可能一个数据报永远也到达不了 A。</p>
+<img src="/2021/01/26/ComputerNetworkReview-Chap4/14.PNG" class title="This is an dijkstra-problem image">
+<p>解决办法：引入路由延迟更新算法。</p>
+
+        <h2 id="距离向量distance-vector路由算法">
+          <a href="#距离向量distance-vector路由算法" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#距离向量distance-vector路由算法"></a> 距离向量（Distance Vector）路由算法</h2>
+      
+<p><strong>基于 bellman-ford 算法，得到源点到所有点的最短路径。</strong></p>
+<img src="/2021/01/26/ComputerNetworkReview-Chap4/15.PNG" class title="This is an bellman-ford image">
+<p><strong>特点：对每个路由器来说，只需要知道其邻居及其链路费用即可。</strong></p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>D</mi><mi>x</mi></msub><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">D_x(y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span>：从结点 x 到结点 y 的最小费用估计</p>
+<ul>
+<li>x 维护距离向量 DV：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>D</mi><mi>V</mi><mo>=</mo><mo stretchy="false">{</mo><msub><mi>D</mi><mi>x</mi></msub><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo><mo>:</mo><mi>y</mi><mo>∈</mo><mi>N</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">DV = \{D_x(y):y\in N\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mord mathdefault" style="margin-right:0.22222em;">V</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.7335400000000001em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mclose">}</span></span></span></span></li>
+</ul>
+<p>结点 x：</p>
+<ul>
+<li>已知到达每个邻居的费用 c(x,v)</li>
+<li>维护其所有邻居 v 的距离向量：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>D</mi><mi>V</mi><mo>=</mo><mo stretchy="false">{</mo><msub><mi>D</mi><mi>v</mi></msub><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo><mo>:</mo><mi>y</mi><mo>∈</mo><mi>N</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">DV = \{D_v(y):y\in N\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mord mathdefault" style="margin-right:0.22222em;">V</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">v</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.7335400000000001em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mclose">}</span></span></span></span></li>
+</ul>
+<p><strong>核心思想</strong>：</p>
+<ul>
+<li>
+<p>每个节点不定时的将自身 DV 估计发送给邻居</p>
+</li>
+<li>
+<p>当 x 接收到最新的 DV 估计时，根据 B-F 方程更新自身的距离向量估计：</p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>D</mi><mi>x</mi></msub><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo><mo>&lt;</mo><mo>−</mo><mtext>  </mtext><mi>m</mi><mi>i</mi><msub><mi>n</mi><mi>v</mi></msub><mo stretchy="false">{</mo><mi>c</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>v</mi><mo stretchy="false">)</mo><mo>+</mo><msub><mi>D</mi><mi>v</mi></msub><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo><mtext> </mtext><mi>f</mi><mi>o</mi><mi>r</mi><mtext> </mtext><mi>e</mi><mi>a</mi><mi>c</mi><mi>h</mi><mtext> </mtext><mi>n</mi><mi>o</mi><mi>d</mi><mi>e</mi><mtext> </mtext><mi>y</mi><mo>∈</mo><mi>N</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">D_x(y) &lt;- ~~min_v \{c(x,v) + D_v(y) ~for ~each~node~y\in N\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">−</span><span class="mspace nobreak"> </span><span class="mspace nobreak"> </span><span class="mord mathdefault">m</span><span class="mord mathdefault">i</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">v</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">{</span><span class="mord mathdefault">c</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">v</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mspace nobreak"> </span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mspace nobreak"> </span><span class="mord mathdefault">e</span><span class="mord mathdefault">a</span><span class="mord mathdefault">c</span><span class="mord mathdefault">h</span><span class="mspace nobreak"> </span><span class="mord mathdefault">n</span><span class="mord mathdefault">o</span><span class="mord mathdefault">d</span><span class="mord mathdefault">e</span><span class="mspace nobreak"> </span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mclose">}</span></span></span></span></p>
+</li>
+<li>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>D</mi><mi>x</mi></msub><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">D_x(y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span> 将<strong>最终收敛于</strong>实际最小费用 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>d</mi><mi>x</mi></msub><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">d_x(y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span></p>
+</li>
+</ul>
+<p><strong>无穷计数问题：好消息传播快，坏消息传播慢。</strong></p>
+<img src="/2021/01/26/ComputerNetworkReview-Chap4/16.PNG" class title="This is an bellman-ford-problem image">
+<p><strong>消除无穷计数问题：</strong></p>
+<ol>
+<li>
+<p>毒性逆转：</p>
+ <img src="/2021/01/26/ComputerNetworkReview-Chap4/17.PNG" class title="This is an bellman-ford-problem image">
+</li>
+<li>
+<p>定义最大度量：</p>
+<p>定义一个最大的有效费用值，如 15 跳，16 跳表示无穷大。</p>
+ <img src="/2021/01/26/ComputerNetworkReview-Chap4/18.PNG" class title="This is an mmd image">
+<p>无穷计数不会真正的无穷下去，会在有限的步数内反应网络状态。比如上图中的 R1,R2 已经不可达了。</p>
+</li>
+</ol>
+
+        <h2 id="层次路由">
+          <a href="#层次路由" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#层次路由"></a> 层次路由</h2>
+      
+<p>将任意规模的网络抽象成一张图，这样计算路由过于理想化。</p>
+<p>在实际（大规模）网络中不可行：</p>
+<blockquote>
+<ol>
+<li>路由表几乎无法存储；</li>
+<li>路由计算过程的信息交换量巨大，会淹没电路。</li>
+</ol>
+</blockquote>
+<p>考虑网络管理自治性的问题：每个网络的管理可能都期望自主控制内部路由算法。</p>
+
+        <h3 id="自治系统-asautonomous-systems">
+          <a href="#自治系统-asautonomous-systems" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#自治系统-asautonomous-systems"></a> 自治系统 AS（autonomous systems）</h3>
+      
+<p>聚合路由器为一个区域：自治系统。</p>
+<p>同一个 AS 内的路由器运行相同的路由协议（算法）。</p>
+<ul>
+<li>自治系统内部路由协议</li>
+<li>不同的 AS 内的路由器可以运行不同的 AS 内部路由协议</li>
+</ul>
+<p>网关路由器：</p>
+<ul>
+<li>在 AS 边缘</li>
+<li>通过链路连接其他的 AS 网关路由器</li>
+</ul>
+<p>互连的 AS：</p>
+<ul>
+<li>转发表由 AS 内部路由算法与 AS 间路由算法共同设置。</li>
+</ul>
+<img src="/2021/01/26/ComputerNetworkReview-Chap4/19.PNG" class title="This is an AS image">
+<p><strong>举个栗子：</strong></p>
+<img src="/2021/01/26/ComputerNetworkReview-Chap4/20.PNG" class title="This is an eg-1 image">
+<img src="/2021/01/26/ComputerNetworkReview-Chap4/21.PNG" class title="This is an eg-2 image">
+<p>热土豆路由协议：选择最近的网关路由器。</p>
+<img src="/2021/01/26/ComputerNetworkReview-Chap4/22.PNG" class title="This is an eg-3 image">
+
+        <h1 id="路由协议">
+          <a href="#路由协议" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#路由协议"></a> 路由协议</h1>
+      
+<p>Internet 采用层次路由。</p>
+<p>AS 内部路由协议也称内部网关协议IGP（Interior Gateway Protocols），</p>
+<p>最常见的有:</p>
+<ul>
+<li>路由信息协议 RIP（Routing Information Protocol）：较低层ISP和企业网中使用</li>
+<li>开放最短路径优先协议 OSPF（Open Shortest Path First）：较顶层 ISP 中使用</li>
+</ul>
+<p>外部网关协议 EGP（Exterior Gateway Protocols），目前只有： BGP（Border Gateway Protocol）</p>
+
+        <h2 id="rip">
+          <a href="#rip" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#rip"></a> RIP</h2>
+      
+<p>RIP 采用<strong>距离矢量选路算法</strong>：</p>
+<ul>
+<li>
+<p>距离度量：跳步数（MAX = 15 hops），每条链路一个跳步。</p>
+</li>
+<li>
+<p>RIP 响应报文（RIP通告）<br>
+距离向量封装在RIP响应报文中传输；<br>
+每个报文携带一个目的子网列表（最多包含25个子网），以及到每个目的子网的最短距离；</p>
+</li>
+<li>
+<p>RIP 响应报文的发送：<br>
+相邻路由器之间大约每 30 秒交换一次 RIP 响应报文<br>
+RIP 报文封装在 UDP 报文中发送，使用 UDP 端口 520</p>
+<blockquote>
+<p>RIP是一个应用层协议，其路由表示利用一个称作 route-d（daemon）的应用层进程进行管理。</p>
+<p>RIP：是应用层协议，但完成的是网络层功能。</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>RIP 链路的失效和恢复：</strong></p>
+<ul>
+<li>
+<p>经过该邻居的路由不可用：需要重新计算路由</p>
+</li>
+<li>
+<p>向邻居发送新的通告</p>
+</li>
+<li>
+<p>若转发表改变，邻居再依次向外发送通告</p>
+</li>
+<li>
+<p>链路失效信息能否快速传播到全网？</p>
+<p>可能发生无穷计数问题，但因为规定了最大跳数，故而可以在有限时间内收敛到正确状态。</p>
+</li>
+<li>
+<p><strong>毒性逆转技术</strong> 用于预防乒乓环路。</p>
+</li>
+</ul>
+<blockquote>
+<p>RIP 认为 15 跳步以内有效，16跳步及以上则认为网络不可达。所以 RIP 适用于小规模的自治系统，超过 15 跳的自治网络就不再适用了。</p>
+</blockquote>
+
+        <h2 id="ospf-open-shortest-path-first">
+          <a href="#ospf-open-shortest-path-first" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#ospf-open-shortest-path-first"></a> OSPF （Open Shortest Path First）</h2>
+      
+<p><strong>特点：</strong></p>
+<p>开放，公众可用；</p>
+<p>采用链路状态路由算法：</p>
+<ol>
+<li>LS 分组扩散（通告）</li>
+<li>每个路由器构造完整的网络（AS）拓扑图</li>
+<li>利用 Dijkstra 算法计算路由</li>
+</ol>
+<p>OSPF 通告中每个入口对应一个邻居；</p>
+<p>OSPF 通告在整个 AS 范围内泛洪，其报文直接封装到 IP 数据报中。</p>
+<p>与 OSPF 及其相似的路由协议： IS-IS 路由协议。</p>
+
+        <h2 id="bgp-自治系统间的路由选择">
+          <a href="#bgp-自治系统间的路由选择" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#bgp-自治系统间的路由选择"></a> BGP – 自治系统间的路由选择</h2>
+      
+<p>用于确定跨越多个 AS 的源和目的对之间的路径。</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://github.com/karin0018/karin0018.github.io">Karin Lv</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://github.com/karin0018/karin0018.github.io/2021/01/26/ComputerNetworkReview-Chap4/">https://github.com/karin0018/karin0018.github.io/2021/01/26/ComputerNetworkReview-Chap4/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://github.com/karin0018/karin0018.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/01/26/hexo-stun/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">hexo+stun 博客搭建</span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="utterances-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%BC%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">
+           综述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5%E7%AE%80%E4%BB%8B"><span class="toc-number">2.</span> <span class="toc-text">
+           概念简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%99%9A%E7%94%B5%E8%B7%AF%E5%92%8C%E6%95%B0%E6%8D%AE%E6%8A%A5%E7%BD%91%E7%BB%9C"><span class="toc-number">3.</span> <span class="toc-text">
+           虚电路和数据报网络</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E7%94%B5%E8%B7%AF-virtual-circuits"><span class="toc-number">3.1.</span> <span class="toc-text">
+           虚电路 Virtual circuits</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%8A%A5%E7%BD%91%E7%BB%9C"><span class="toc-number">3.2.</span> <span class="toc-text">
+           数据报网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%8A%A5%E7%BD%91%E7%BB%9C-vs-%E8%99%9A%E7%94%B5%E8%B7%AF%E7%BD%91%E7%BB%9C"><span class="toc-number">3.3.</span> <span class="toc-text">
+           数据报网络 VS 虚电路网络</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#internet-%E7%BD%91%E7%BB%9C%E5%B1%82%E5%8D%8F%E8%AE%AE"><span class="toc-number">4.</span> <span class="toc-text">
+           Internet 网络层协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#internet-%E7%BD%91%E7%BB%9C%E5%B1%82"><span class="toc-number">4.1.</span> <span class="toc-text">
+           internet 网络层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ipv4-%E6%95%B0%E6%8D%AE%E6%8A%A5%E6%A0%BC%E5%BC%8F"><span class="toc-number">4.2.</span> <span class="toc-text">
+           IPv4 数据报格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ip-%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%88%86%E7%89%87"><span class="toc-number">4.3.</span> <span class="toc-text">
+           IP 数据报分片</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%A4%A7%E4%BC%A0%E8%BE%93%E5%8D%95%E5%85%83-mtu"><span class="toc-number">4.3.1.</span> <span class="toc-text">
+           最大传输单元 MTU</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%BB%84%E4%B8%8E%E9%87%8D%E7%BB%84"><span class="toc-number">4.3.2.</span> <span class="toc-text">
+           分组与重组</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ip-%E7%BC%96%E5%9D%80"><span class="toc-number">4.4.</span> <span class="toc-text">
+           IP 编址</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%89%E7%B1%BB%E7%BC%96%E5%9D%80"><span class="toc-number">4.4.1.</span> <span class="toc-text">
+           有类编址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86"><span class="toc-number">4.4.2.</span> <span class="toc-text">
+           子网划分</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E6%A0%97%E5%AD%90"><span class="toc-number">4.4.2.1.</span> <span class="toc-text">
+           一个栗子</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E7%B1%BB%E5%9F%9F%E9%97%B4%E8%B7%AF%E7%94%B1-cidr"><span class="toc-number">4.4.3.</span> <span class="toc-text">
+           无类域间路由 CIDR</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E8%81%9A%E5%90%88"><span class="toc-number">4.4.3.1.</span> <span class="toc-text">
+           路由聚合</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dhcp-%E5%8D%8F%E8%AE%AE"><span class="toc-number">4.5.</span> <span class="toc-text">
+           DHCP 协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2-nat"><span class="toc-number">4.6.</span> <span class="toc-text">
+           网络地址转换 NAT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%92%E8%81%94%E7%BD%91%E6%8E%A7%E5%88%B6%E6%8A%A5%E6%96%87%E5%8D%8F%E8%AE%AE-icmp"><span class="toc-number">4.7.</span> <span class="toc-text">
+           互联网控制报文协议 ICMP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ipv6"><span class="toc-number">4.8.</span> <span class="toc-text">
+           IPv6</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ipv6-%E6%95%B0%E6%8D%AE%E6%8A%A5%E6%A0%BC%E5%BC%8F"><span class="toc-number">4.8.1.</span> <span class="toc-text">
+           IPv6 数据报格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ipv6-%E5%9C%B0%E5%9D%80"><span class="toc-number">4.8.2.</span> <span class="toc-text">
+           IPv6 地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ipv6-vs-ipv4"><span class="toc-number">4.8.3.</span> <span class="toc-text">
+           IPv6 vs. IPv4</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E7%AE%97%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">
+           路由算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E7%AE%97%E6%B3%95%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">5.1.</span> <span class="toc-text">
+           路由算法的分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E8%B7%AF%E7%8A%B6%E6%80%81link-state%E8%B7%AF%E7%94%B1%E7%AE%97%E6%B3%95"><span class="toc-number">5.2.</span> <span class="toc-text">
+           链路状态（Link State）路由算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%9D%E7%A6%BB%E5%90%91%E9%87%8Fdistance-vector%E8%B7%AF%E7%94%B1%E7%AE%97%E6%B3%95"><span class="toc-number">5.3.</span> <span class="toc-text">
+           距离向量（Distance Vector）路由算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%82%E6%AC%A1%E8%B7%AF%E7%94%B1"><span class="toc-number">5.4.</span> <span class="toc-text">
+           层次路由</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E6%B2%BB%E7%B3%BB%E7%BB%9F-asautonomous-systems"><span class="toc-number">5.4.1.</span> <span class="toc-text">
+           自治系统 AS（autonomous systems）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE"><span class="toc-number">6.</span> <span class="toc-text">
+           路由协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#rip"><span class="toc-number">6.1.</span> <span class="toc-text">
+           RIP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ospf-open-shortest-path-first"><span class="toc-number">6.2.</span> <span class="toc-text">
+           OSPF （Open Shortest Path First）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bgp-%E8%87%AA%E6%B2%BB%E7%B3%BB%E7%BB%9F%E9%97%B4%E7%9A%84%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9"><span class="toc-number">6.3.</span> <span class="toc-text">
+           BGP – 自治系统间的路由选择</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/logo.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Karin</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/karin0018" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="mailto:karinlv777@gmail.com" target="_blank" rel="noopener" data-popover="social.Gmail" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">Gmail</span></a><a class="sidebar-ov-social-item" href="mailto:1263670364@qq.com" target="_blank" rel="noopener" data-popover="social.QQmail" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">QQ 邮箱</span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">10</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">3</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">6</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Karin Lv</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div><div>To live is to change the world.</div><script type="text/javascript" id="maid-script" src="https://unpkg.com/mermaid@undefined/dist/mermaid.min.js?v=undefined"></script><script>if (window.mermaid) {
+  var options = JSON.parse(document.getElementById('maid-script').getAttribute('mermaidoptioins'));
+  mermaid.initialize(options);
+}</script></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+  var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-inner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
+  // 加载进度条的计时器
+  var loadingTimer = null;
+
+  // 重置页面 Y 方向上的滚动偏移量
+  document.addEventListener('pjax:send', function () {
+    $('.header-nav-menu').removeClass('show');
+    if (CONFIG.pjax && CONFIG.pjax.avoidBanner) {
+      $('html').velocity('scroll', {
+        duration: 500,
+        offset: $('#header').height(),
+        easing: 'easeInOutCubic'
+      });
+    }
+
+    var loadingBarWidth = 20;
+    var MAX_LOADING_WIDTH = 95;
+
+    $('.loading-bar').addClass('loading');
+    $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    clearInterval(loadingTimer);
+    loadingTimer = setInterval(function () {
+      loadingBarWidth += 3;
+      if (loadingBarWidth > MAX_LOADING_WIDTH) {
+        loadingBarWidth = MAX_LOADING_WIDTH;
+      }
+      $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    }, 500);
+  }, false);
+
+  window.addEventListener('pjax:complete', function () {
+    clearInterval(loadingTimer);
+    $('.loading-bar__progress').css('width', '100%');
+    $('.loading-bar').removeClass('loading');
+    setTimeout(function () {
+      $('.loading-bar__progress').css('width', '0');
+    }, 400);
+    $('link[rel=prefetch], script[data-pjax-rm]').each(function () {
+      $(this).remove();
+    });
+    $('script[data-pjax], #pjax-reload script').each(function () {
+      $(this).parent().append($(this).remove());
+    });
+
+    if (Stun.utils.pjaxReloadBoot) {
+      Stun.utils.pjaxReloadBoot();
+    }
+    if (Stun.utils.pjaxReloadScroll) {
+      Stun.utils.pjaxReloadScroll();
+    }
+    if (Stun.utils.pjaxReloadSidebar) {
+      Stun.utils.pjaxReloadSidebar();
+    }
+    if (true) {
+      if (Stun.utils.pjaxReloadHeader) {
+        Stun.utils.pjaxReloadHeader();
+      }
+      if (Stun.utils.pjaxReloadScrollIcon) {
+        Stun.utils.pjaxReloadScrollIcon();
+      }
+      if (Stun.utils.pjaxReloadLocalSearch) {
+        Stun.utils.pjaxReloadLocalSearch();
+      }
+    }
+  }, false);
+}, false);</script><div id="pjax-reload"><link href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" rel="stylesheet" type="text/css"><link href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/copy-tex.css" rel="stylesheet" type="text/css"><script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/copy-tex.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script></div><script data-pjax="">function loadUtterances() {
+  var d = document, s = d.createElement('script');
+  var container = d.getElementById('utterances-container');
+
+  if (!container) {
+    return;
+  }
+  s.src = 'https://utteranc.es/client.js';
+  s.setAttribute('repo', 'karin0018/karin0018.github.io');
+  s.setAttribute('issue-term', 'title');
+  s.setAttribute('label', 'utterances');
+  s.setAttribute('theme', 'github-light');
+  s.setAttribute('crossorigin', 'anonymous');
+  s.setAttribute('async', '');
+  if (true) {
+    s.setAttribute('data-pjax-rm', '');
+  }
+  container.append(s);
+}
+
+if (true) {
+  loadUtterances();
+} else {
+  window.addEventListener('DOMContentLoaded', loadUtterances, false);
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>
