@@ -5,13 +5,16 @@
 <meta property="og:site_name" content="KarinLv&#39;s Blog">
 <meta property="og:description" content="Author:Junliang Guo, Zhirui Zhang, Linli Xu, Hao-Ran Wei, Boxing Chen, Enhong Chen paper                      Introduction        预训练模型 bert 在自然语言处理任务上应用广泛，譬如阅读理解，文本分类等。但是目前还不能很好的应用在基于 seq2seq 框架的神经网络">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/2022/01/04/paper-NMT-JunliangGuo/framework.png">
+<meta property="og:image" content="https://github.com/2022/01/04/paper-NMT-JunliangGuo/NAT.jpg">
 <meta property="og:image" content="https://github.com/2022/01/04/paper-NMT-JunliangGuo/table1.png">
+<meta property="og:image" content="https://github.com/2022/01/04/paper-NMT-JunliangGuo/table2-3.png">
 <meta property="article:published_time" content="2022-01-04T08:44:38.000Z">
-<meta property="article:modified_time" content="2022-01-04T12:47:56.955Z">
+<meta property="article:modified_time" content="2022-01-04T13:38:44.022Z">
 <meta property="article:author" content="Karin Lv">
 <meta property="article:tag" content="读论文">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://github.com/2022/01/04/paper-NMT-JunliangGuo/table1.png"><title>Incorporating BERT into Parallel Sequence Decoding with Adapters | KarinLv's Blog</title><link ref="canonical" href="https://github.com/karin0018/karin0018.github.io/2022/01/04/paper-NMT-JunliangGuo/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><script src="https://www.googletagmanager.com/gtag/js?id=G-C0DMRRZFFK" async="" data-pjax=""></script><script data-pjax="">if (window.location.hostname !== 'localhost') {
+<meta name="twitter:image" content="https://github.com/2022/01/04/paper-NMT-JunliangGuo/framework.png"><title>Incorporating BERT into Parallel Sequence Decoding with Adapters | KarinLv's Blog</title><link ref="canonical" href="https://github.com/karin0018/karin0018.github.io/2022/01/04/paper-NMT-JunliangGuo/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><script src="https://www.googletagmanager.com/gtag/js?id=G-C0DMRRZFFK" async="" data-pjax=""></script><script data-pjax="">if (window.location.hostname !== 'localhost') {
   window.dataLayer = window.dataLayer || [];
   function gtag(){ dataLayer.push(arguments); }
   gtag('js', new Date());
@@ -99,9 +102,8 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.3.0"></he
 <li>
 <p>并行解码：conditional mask language model（CMLM）</p>
 <p>训练损失函数：</p>
-<p class="katex-block katex-error" title="ParseError: KaTeX parse error: Expected &#039;EOF&#039;, got &#039;&amp;&#039; at position 47: …,\theta_{dec}) &amp;̲=&amp; -\sum_{t=1}^…">L_{CMLM}(y^m|y^r,x;\theta_{enc},\theta_{dec}) &amp;=&amp; -\sum_{t=1}^{|y^m|}logP(y_t^m|y^r,x;\theta_{enc},\theta_{dec})\\
-loss &amp;=&amp; L_{CMLM}  +L_{length}
-</p>
+<p><span class="katex-error" title="ParseError: KaTeX parse error: Expected &#039;EOF&#039;, got &#039;&amp;&#039; at position 47: …,\theta_{dec}) &amp;̲=&amp; -\sum_{t=1}^…">L_{CMLM}(y^m|y^r,x;\theta_{enc},\theta_{dec}) &amp;=&amp; -\sum_{t=1}^{|y^m|}logP(y_t^m|y^r,x;\theta_{enc},\theta_{dec})\\
+loss &amp;=&amp; L_{CMLM}  +L_{length}</span></p>
 <div class="table-container"><table>
 <thead>
 <tr>
@@ -140,7 +142,7 @@ loss &amp;=&amp; L_{CMLM}  +L_{length}
         <h2 id="framework">
           <a href="#framework" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#framework"></a> Framework</h2>
       
-
+<img src="/2022/01/04/paper-NMT-JunliangGuo/framework.png" class title="framework">
 <p>训练流程：</p>
 <ul>
 <li>
@@ -165,7 +167,7 @@ loss &amp;=&amp; L_{CMLM}  +L_{length}
           <a href="#why-mask-predict" class="heading-link"><i class="fas fa-link"></i></a><a class="markdownIt-Anchor" href="#why-mask-predict"></a> why mask-predict?</h3>
       
 <p><span class="exturl"><a class="exturl__link" href="https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1711.02281v1">Non-Autoregressive Neural Machine Translation</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
-
+<img src="/2022/01/04/paper-NMT-JunliangGuo/NAT.jpg" class title="NAT2018">
 <p>Jiatao Gu在这篇ICLR18的文章中首次提出了Non-Autoregressive Translation （以下简称NAT）的概念，它对每个位置的词语的概率分布独立建模，测试时并行解码，但存在“多模态”问题（multi-modality problem）</p>
 <blockquote>
 <p>multi-modality problem：同一句话很大概率存在不同的有效翻译</p>
@@ -190,6 +192,7 @@ loss &amp;=&amp; L_{CMLM}  +L_{length}
 <p>While inference,we generate multiple translation candidates by taking the top B length predictions into consideration,and select the translation with the <strong>highest probability</strong> as the final result.</p>
 <p>We set B = 4 for all tasks. And the upper bound of iterative decoding is set to 10。</p>
 <p>For autoregressive decoding, we use beamsearch with width 5 for all tasks. We utilize BLEU scores as the evaluation metric.</p>
+<img src="/2022/01/04/paper-NMT-JunliangGuo/table2-3.png" class title="table2-3">
 <p>本文还针对模型的参数规模、模型组件、微调策略做了 ablation study，验证得出本文的模型对参数规模鲁棒且效果确实强于 BERT-Fuesd.</p>
 
         <h2 id="conclusion">
